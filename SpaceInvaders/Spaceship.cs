@@ -7,23 +7,16 @@ using System.Windows.Forms;
 
 namespace SpaceInvaders
 {
-    class Spaceship : GameObject
+    class Spaceship : SimpleObject
     {
        
        private double speedPixelsPerSecond; // Player movement speed
-       public Vector2D position; // Player position
-       public int lives; // Player lives
-       public Bitmap picture; // Image depicting the spaceship
        public Missile missile; // Player's missile
 
-       public Spaceship(Vector2D startPosition, double speed, Bitmap image, int initialLives)
+       public Spaceship(Vector2D startPosition, double speed, Bitmap image, int initialLives) : base(startPosition, image, initialLives)
        {
-           position = startPosition;
            speedPixelsPerSecond = speed;
-           picture = image;
-           lives = initialLives;
-        }
-
+       }
 
         public override void Update(Game gameInstance, double deltaT)
         {
@@ -44,16 +37,6 @@ namespace SpaceInvaders
                 Shoot(gameInstance);
                 gameInstance.ReleaseKey(Keys.Space); // Prevent continuous shooting
             }
-        }
-
-        public override void Draw(Game gameInstance, Graphics graphics)
-        {
-            graphics.DrawImage(picture, (float)position.x, (float)position.y);
-        }
-
-        public override bool IsAlive()
-        {
-            return lives > 0;
         }
 
         public void Shoot(Game gameInstance)

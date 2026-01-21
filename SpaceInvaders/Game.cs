@@ -11,12 +11,20 @@ namespace SpaceInvaders
     /// <summary>
     /// This class represents the entire game, it implements the singleton pattern
     /// </summary>
+    /// 
+    enum GameState
+    {
+        Play, 
+        Pause
+    }
     class Game
     {
 
         #region GameObjects management
 
         private Spaceship playerShip;
+
+        private GameState state;
 
         /// <summary>
         /// Set of all game objects currently in the game
@@ -93,6 +101,8 @@ namespace SpaceInvaders
         {
             this.gameSize = gameSize;
 
+            this.state = GameState.Play;
+
             // create player ship
             Bitmap image = SpaceInvaders.Properties.Resources.ship3;
 
@@ -104,6 +114,18 @@ namespace SpaceInvaders
             playerShip = new Spaceship(startPosition, 300, image, 3);
 
             gameObjects.Add(playerShip);
+
+            // create bunkers
+
+            Bitmap bunkerImage = SpaceInvaders.Properties.Resources.bunker;
+            double yPosition = gameSize.Height - bunkerImage.Height - 100;
+            for (int i = 1; i <= 3; i++)
+            {
+                double xPosition = (gameSize.Width / 4.0) * i - (bunkerImage.Width / 2.0);
+                
+                Bunker bunker = new Bunker(new Vector2D(xPosition, yPosition));
+                gameObjects.Add(bunker);
+            }
         }
 
 
@@ -130,7 +152,12 @@ namespace SpaceInvaders
         public void Draw(Graphics g)
         {
             foreach (GameObject gameObject in gameObjects)
-                gameObject.Draw(this, g);       
+                gameObject.Draw(this, g); 
+
+            if (state == GameState.Pause)
+            {
+                g.DrawString("PAUSE", defaultFont, blackBrush, gameSize.Width / 2 - 30, gameSize.Height / 2);
+            }
         }
 
         /// <summary>
@@ -138,19 +165,34 @@ namespace SpaceInvaders
         /// </summary>
         public void Update(double deltaT)
         {
-            // add new game objects
-            gameObjects.UnionWith(pendingNewGameObjects);
-            pendingNewGameObjects.Clear();
 
-
-            // update each game object
-            foreach (GameObject gameObject in gameObjects)
+            if (keyPressed.Contains(Keys.P))
             {
-                gameObject.Update(this, deltaT);
+                if (state == GameState.Play)
+                    state = GameState.Pause;
+                else
+                    state = GameState.Play;
+
+                ReleaseKey(Keys.P);
             }
 
-            // remove dead objects
-            gameObjects.RemoveWhere(gameObject => !gameObject.IsAlive());
+            if (state == GameState.Play)
+            {
+
+                // add new game objects
+                gameObjects.UnionWith(pendingNewGameObjects);
+                pendingNewGameObjects.Clear();
+
+
+                // update each game object
+                foreach (GameObject gameObject in gameObjects)
+                {
+                    gameObject.Update(this, deltaT);
+                }
+
+                // remove dead objects
+                gameObjects.RemoveWhere(gameObject => !gameObject.IsAlive());
+            }
         }
         #endregion
     }
