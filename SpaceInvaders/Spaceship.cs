@@ -10,7 +10,7 @@ namespace SpaceInvaders
     class Spaceship : SimpleObject
     {
        
-       private double speedPixelsPerSecond; // Player movement speed
+       protected double speedPixelsPerSecond; // Player movement speed
        public Missile missile; // Player's missile
 
        public Spaceship(Vector2D startPosition, double speed, Bitmap image, int initialLives) : base(startPosition, image, initialLives)
@@ -18,26 +18,7 @@ namespace SpaceInvaders
            speedPixelsPerSecond = speed;
        }
 
-        public override void Update(Game gameInstance, double deltaT)
-        {
-            //// Example movement logic (left/right with arrow keys)
-            if (gameInstance.keyPressed.Contains(Keys.Left))
-            {
-                position.x -= speedPixelsPerSecond * deltaT;
-            }
-            if (gameInstance.keyPressed.Contains(Keys.Right))
-            {
-                position.x += speedPixelsPerSecond * deltaT;
-            }
-            // Ensure the spaceship stays within game bounds
-            position.x = Math.Max(0, Math.Min(position.x, gameInstance.gameSize.Width - picture.Width));
-
-            if (gameInstance.keyPressed.Contains(Keys.Space))
-            {
-                Shoot(gameInstance);
-                gameInstance.ReleaseKey(Keys.Space); // Prevent continuous shooting
-            }
-        }
+        public override void Update(Game gameInstance, double deltaT) { } // do nothing by default
 
         public void Shoot(Game gameInstance)
         {

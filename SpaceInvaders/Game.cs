@@ -24,6 +24,8 @@ namespace SpaceInvaders
 
         private Spaceship playerShip;
 
+        private EnemyBlock enemies;
+
         private GameState state;
 
         /// <summary>
@@ -111,7 +113,7 @@ namespace SpaceInvaders
                 gameSize.Height - image.Height - 10
             );
 
-            playerShip = new Spaceship(startPosition, 300, image, 3);
+            playerShip = new PlayerSpaceship(startPosition, 300, image, 3);
 
             gameObjects.Add(playerShip);
 
@@ -126,9 +128,25 @@ namespace SpaceInvaders
                 Bunker bunker = new Bunker(new Vector2D(xPosition, yPosition));
                 gameObjects.Add(bunker);
             }
+
+            // create enemy block
+            enemies = new EnemyBlock(
+                new HashSet<Spaceship>(),
+                (int)gameSize.Width - 2 * 20,
+                new Size(0, 0),
+                new Vector2D(20, 20)
+            );
+
+            Bitmap enemyImage1 = SpaceInvaders.Properties.Resources.ship2;
+            Bitmap enemyImage2 = SpaceInvaders.Properties.Resources.ship4;
+            Bitmap enemyImage3 = SpaceInvaders.Properties.Resources.ship7;
+
+            enemies.AddLine(nbShips: 6, nbLives: 3, shipImage: enemyImage1);
+            enemies.AddLine(nbShips: 4, nbLives: 2, shipImage: enemyImage2);
+            enemies.AddLine(nbShips: 10, nbLives: 1, shipImage: enemyImage3);
+
+            gameObjects.Add(enemies);
         }
-
-
 
         #endregion
 
