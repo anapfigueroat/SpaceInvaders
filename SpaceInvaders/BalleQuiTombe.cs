@@ -72,6 +72,8 @@ namespace SpaceInvaders
             return alive;
         }
 
+        public override void Collision(Missile m){}
+
         #endregion
     }
 }
