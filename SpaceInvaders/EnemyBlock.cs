@@ -73,5 +73,7 @@ namespace SpaceInvaders
             return enemyShips.Any(ship => ship.IsAlive());
         }
 
+        public override void Collision(Missile m) { } // TODO
+
     }
 }
