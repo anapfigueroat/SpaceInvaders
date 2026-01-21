@@ -26,6 +26,11 @@ namespace SpaceInvaders
             {
                 lives = 0;
             }
+
+            foreach (GameObject gameObject in gameInstance.gameObjects)
+            {
+                gameObject.Collision(this);
+            }
         }
     }
 }
