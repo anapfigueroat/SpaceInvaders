@@ -34,5 +34,11 @@ namespace SpaceInvaders
             }
         }
 
+        protected override void OnCollision(Missile m, int collisionCount)
+        {
+            int damage = Math.Min(m.lives, lives);
+            m.lives -= damage;
+            lives -= damage;
+        }
     }
 }

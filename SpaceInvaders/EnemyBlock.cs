@@ -15,7 +15,7 @@ namespace SpaceInvaders
         protected Vector2D Position { get; set; } // Block position (top left corner)
         private int direction = 1;                // 1 = right, -1 = left
         private double speed = 50.0;              // starting speed of the enemy block
-        private const double speedCoef = 1.15;    // speed change coefficient 
+        private const double speedCoef = 1.1;     // speed change coefficient 
         private const int drop = 25;              // Shift the block downards
 
         public EnemyBlock(HashSet<Spaceship> enemyShips, int baseWidth, Size size, Vector2D position)
@@ -93,7 +93,10 @@ namespace SpaceInvaders
         public override void Draw(Game gameInstance, Graphics graphics)
         {
             foreach (var ship in enemyShips)
-                ship.Draw(gameInstance, graphics);
+            {
+                if (ship.lives > 0)
+                    ship.Draw(gameInstance, graphics);
+            }
         }
 
         public override bool IsAlive()
@@ -101,7 +104,28 @@ namespace SpaceInvaders
             return enemyShips.Any(ship => ship.IsAlive());
         }
 
-        public override void Collision(Missile m) { } // TODO
+        public override void Collision(Missile m)
+        {
+            double mX = m.position.x;
+            double mY = m.position.y;
+            double mW = m.picture.Width;
+            double mH = m.picture.Height;
 
+            foreach (var spaceShip in enemyShips)
+            {
+                if (!(spaceShip.IsAlive())) continue;
+
+                double sX = spaceShip.position.x;
+                double sY = spaceShip.position.y;
+                double sW = spaceShip.picture.Width;
+                double sH = spaceShip.picture.Height;
+
+                if (mX > sX + sW || mX + mW < sX || mY > sY + sH || mY + mH < sY)
+                    continue; 
+
+                spaceShip.Collision(m);
+                break;
+            }
+        }
     }
 }

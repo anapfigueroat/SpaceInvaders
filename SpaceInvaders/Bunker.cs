@@ -5,52 +5,17 @@ namespace SpaceInvaders
 {
     class Bunker : SimpleObject
     {
-        public Bunker(Vector2D position) : base(position, SpaceInvaders.Properties.Resources.bunker, 100){} 
-        public override void Update(Game gameInstance, double deltaT){}
+        public Bunker(Vector2D position) : base(position, SpaceInvaders.Properties.Resources.bunker, 100) { }
+        public override void Update(Game gameInstance, double deltaT) { }
 
-        /// <summary>
-        /// Handle collision with a missile
-        /// </summary>
-        public override void Collision(Missile m)
+        protected override void OnCollision(Missile m, int collisionCount)
         {
-            if (TestContainingRectangles(m))
-            {
-                HandlePixelCollision(m);
-            }
+            m.lives -= collisionCount;
+            ErasePixels(m);
         }
 
-        /// <summary>
-        /// Fast check: do the bounding boxes intersect?
-        /// </summary>
-        private bool TestContainingRectangles(Missile m)
+        private void ErasePixels(Missile m)
         {
-            // Missile dimensions
-            double mX = m.position.x;
-            double mY = m.position.y;
-            double mW = m.picture.Width;
-            double mH = m.picture.Height;
-
-            // Bunker dimensions
-            double bX = this.position.x;
-            double bY = this.position.y;
-            double bW = this.picture.Width;
-            double bH = this.picture.Height;
-
-            // Check if disjoint (standard AABB collision logic)
-            if (mX > bX + bW || mX + mW < bX || mY > bY + bH || mY + mH < bY)
-            {
-                return false;
-            }
-            return true;
-        }
-
-        /// <summary>
-        /// Precise check: pixel by pixel intersection
-        /// </summary>
-        private void HandlePixelCollision(Missile m)
-        {
-            int collisionCount = 0;
-
             // Iterate through missile pixels
             for (int i = 0; i < m.picture.Width; i++)
             {
@@ -72,19 +37,11 @@ namespace SpaceInvaders
                             {
                                 // Collision confirmed: erase bunker pixel
                                 this.picture.SetPixel(bPixelX, bPixelY, Color.Transparent);
-                                collisionCount++;
                             }
                         }
                     }
                 }
             }
-
-            // Reduce missile lives by the number of pixels hit
-            if (collisionCount > 0)
-            {
-                m.lives -= collisionCount;
-            }
         }
-
     }
 }

@@ -29,8 +29,16 @@ namespace SpaceInvaders
 
             foreach (GameObject gameObject in gameInstance.gameObjects)
             {
+                if (lives <= 0) break;
+                if (ReferenceEquals(gameObject, this)) continue;
                 gameObject.Collision(this);
             }
+        }
+
+        protected override void OnCollision(Missile m, int collisionCount)
+        {
+            m.lives = 0;
+            lives = 0;
         }
     }
 }
