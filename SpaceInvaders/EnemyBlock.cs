@@ -13,6 +13,10 @@ namespace SpaceInvaders
         private int baseWidth;                    // block width
         protected Size Size {  get; set; }        // Block size (width, height)
         protected Vector2D Position { get; set; } // Block position (top left corner)
+        private int direction = 1;                // 1 = right, -1 = left
+        private double speed = 50.0;              // starting speed of the enemy block
+        private const double speedCoef = 1.15;    // speed change coefficient 
+        private const int drop = 25;              // Shift the block downards
 
         public EnemyBlock(HashSet<Spaceship> enemyShips, int baseWidth, Size size, Vector2D position)
         {
@@ -58,9 +62,33 @@ namespace SpaceInvaders
 
             Size = new Size((int)Math.Ceiling(right - left),
                             (int)Math.Ceiling(bottom - top));
+
+            Position = new Vector2D(left, top);
         }
 
-        public override void Update(Game gameInstance, double deltaT) {  }
+        public override void Update(Game gameInstance, double deltaT) {
+
+            double dx = direction * speed * deltaT;
+
+            foreach (var spaceShip in enemyShips)
+                spaceShip.position.x += dx;
+
+            UpdateSize();
+
+            bool reachedLeft = (Position.x <= 0) && (direction == -1);
+            bool reachedRight = (Position.x + Size.Width >= gameInstance.gameSize.Width) && (direction == 1);
+
+            if (reachedLeft || reachedRight)
+            {
+                foreach (var spaceShip in enemyShips)
+                    spaceShip.position.y += drop;
+
+                UpdateSize();
+
+                direction *= -1;
+                speed *= speedCoef;
+            }
+        }
 
         public override void Draw(Game gameInstance, Graphics graphics)
         {

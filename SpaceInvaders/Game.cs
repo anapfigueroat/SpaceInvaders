@@ -53,7 +53,7 @@ namespace SpaceInvaders
         /// <summary>
         /// Size of the game area
         /// </summary>
-        public Size gameSize;
+        public Size gameSize { get; }
 
         /// <summary>
         /// State of the keyboard
@@ -132,7 +132,7 @@ namespace SpaceInvaders
             // create enemy block
             enemies = new EnemyBlock(
                 new HashSet<Spaceship>(),
-                (int)gameSize.Width - 2 * 20,
+                (int)gameSize.Width - 2 * 20 - 200, // -200 so the block could move
                 new Size(0, 0),
                 new Vector2D(20, 20)
             );
@@ -143,7 +143,7 @@ namespace SpaceInvaders
 
             enemies.AddLine(nbShips: 6, nbLives: 3, shipImage: enemyImage1);
             enemies.AddLine(nbShips: 4, nbLives: 2, shipImage: enemyImage2);
-            enemies.AddLine(nbShips: 10, nbLives: 1, shipImage: enemyImage3);
+            enemies.AddLine(nbShips: 9, nbLives: 1, shipImage: enemyImage3);
 
             gameObjects.Add(enemies);
         }
