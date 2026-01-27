@@ -9,14 +9,19 @@ namespace SpaceInvaders
 {
     class EnemyBlock : GameObject
     {
-        private HashSet<Spaceship> enemyShips;    // ships in the block
-        private int baseWidth;                    // block width
-        public Size Size {  get; set; }        // Block size (width, height)
-        public Vector2D Position { get; set; } // Block position (top left corner)
-        private int direction = 1;                // 1 = right, -1 = left
-        private double speed = 50.0;              // starting speed of the enemy block
-        private const double speedCoef = 1.1;     // speed change coefficient 
-        private const int drop = 25;              // Shift the block downards
+        private HashSet<Spaceship> enemyShips;        // ships in the block
+        private int baseWidth;                        // block width
+        public Size Size {  get; set; }               // Block size (width, height)
+        public Vector2D Position { get; set; }        // Block position (top left corner)
+
+        private int direction = 1;                    // 1 = right, -1 = left
+        private double speed = 50.0;                  // starting speed of the enemy block
+        private const double speedCoef = 1.1;         // speed change coefficient 
+        private const int drop = 25;                  // Shift the block downards
+
+        private double randomShootProbability = 0.05; // probability of an enemy ship shooting
+        private Random rng = new Random();            // for random value generation
+        private double rngCoef = 1.2;                 // shooting probability coefficient
 
         public EnemyBlock(HashSet<Spaceship> enemyShips, int baseWidth, Size size, Vector2D position) : base(Side.Enemy)
         {
@@ -71,7 +76,15 @@ namespace SpaceInvaders
             double dx = direction * speed * deltaT;
 
             foreach (var spaceShip in enemyShips)
+            {
+                if (!spaceShip.IsAlive()) continue;
+
                 spaceShip.position.x += dx;
+
+                double r = rng.NextDouble();
+                if (r <= randomShootProbability * deltaT)
+                    spaceShip.Shoot(gameInstance);
+            }
 
             UpdateSize();
 
@@ -87,6 +100,9 @@ namespace SpaceInvaders
 
                 direction *= -1;
                 speed *= speedCoef;
+                
+                // max 25% chance to shoot per ship
+                randomShootProbability = Math.Min(randomShootProbability * rngCoef, 0.25);
             }
         }
 

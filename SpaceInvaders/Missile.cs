@@ -22,8 +22,8 @@ namespace SpaceInvaders
         {
             // Move the missile upwards
             position.y -= speed * deltaT;
-            // If the missile goes off the top of the screen, it loses a life
-            if (position.y + picture.Height < 0)
+            // If the missile goes off the screen, it loses a life
+            if (position.y + picture.Height < 0 || position.y > gameInstance.gameSize.Height)
             {
                 lives = 0;
             }

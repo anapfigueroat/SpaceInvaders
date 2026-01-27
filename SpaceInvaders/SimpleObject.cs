@@ -32,6 +32,9 @@ namespace SpaceInvaders
         {
             if (!TestContainingRectangles(m)) return;
 
+            if (this.Side != Side.Neutral && this.Side == m.Side)
+                return;
+
             int collisionCount = CountPixelCollision(m);
 
             if (collisionCount > 0)

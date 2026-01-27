@@ -10,8 +10,8 @@ namespace SpaceInvaders
     class Spaceship : SimpleObject
     {
        
-       protected double speedPixelsPerSecond; // Player movement speed
-       public Missile missile; // Player's missile
+       protected double speedPixelsPerSecond; // ship's movement speed
+       public Missile missile; // ship's missile
 
        public Spaceship(Side side, Vector2D startPosition, double speed, Bitmap image, int initialLives) : base(side, startPosition, image, initialLives)
        {
@@ -22,6 +22,8 @@ namespace SpaceInvaders
 
         public void Shoot(Game gameInstance)
         {
+            double missileSpeed = (Side == Side.Enemy) ? -500 : 500;
+
             if (missile == null || !missile.IsAlive())
             {
                 Bitmap missileImage = SpaceInvaders.Properties.Resources.shoot1;
@@ -29,7 +31,7 @@ namespace SpaceInvaders
                     position.x + (picture.Width - missileImage.Width) / 2,
                     position.y - missileImage.Height
                 );
-                missile = new Missile(this.Side, missileStartPos, 500, SpaceInvaders.Properties.Resources.shoot1, 1);
+                missile = new Missile(this.Side, missileStartPos, missileSpeed, SpaceInvaders.Properties.Resources.shoot1, 1);
                 gameInstance.AddNewGameObject(missile);
             }
         }
