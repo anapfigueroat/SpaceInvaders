@@ -11,7 +11,7 @@ namespace SpaceInvaders
     class PlayerSpaceship : Spaceship
     {
         public PlayerSpaceship(Vector2D startPosition, double speed, Bitmap image, int initialLives) 
-            : base(startPosition, speed, image, initialLives) { }
+            : base(Side.Ally, startPosition, speed, image, initialLives) { }
 
         public override void Update(Game gameInstance, double deltaT)
         {

@@ -18,7 +18,7 @@ namespace SpaceInvaders
         private const double speedCoef = 1.1;     // speed change coefficient 
         private const int drop = 25;              // Shift the block downards
 
-        public EnemyBlock(HashSet<Spaceship> enemyShips, int baseWidth, Size size, Vector2D position)
+        public EnemyBlock(HashSet<Spaceship> enemyShips, int baseWidth, Size size, Vector2D position) : base(Side.Enemy)
         {
             this.enemyShips = enemyShips;
             this.baseWidth = baseWidth;
@@ -39,7 +39,7 @@ namespace SpaceInvaders
                     Position.y + Size.Height + offset
                 );
 
-                enemyShips.Add(new Spaceship(pos, 0.0, shipImage, nbLives));
+                enemyShips.Add(new Spaceship(this.Side, pos, 0.0, shipImage, nbLives));
             }
 
             UpdateSize();

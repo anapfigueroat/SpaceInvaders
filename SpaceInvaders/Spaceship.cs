@@ -13,7 +13,7 @@ namespace SpaceInvaders
        protected double speedPixelsPerSecond; // Player movement speed
        public Missile missile; // Player's missile
 
-       public Spaceship(Vector2D startPosition, double speed, Bitmap image, int initialLives) : base(startPosition, image, initialLives)
+       public Spaceship(Side side, Vector2D startPosition, double speed, Bitmap image, int initialLives) : base(side, startPosition, image, initialLives)
        {
            speedPixelsPerSecond = speed;
        }
@@ -29,7 +29,7 @@ namespace SpaceInvaders
                     position.x + (picture.Width - missileImage.Width) / 2,
                     position.y - missileImage.Height
                 );
-                missile = new Missile(missileStartPos, 500, SpaceInvaders.Properties.Resources.shoot1, 1);
+                missile = new Missile(this.Side, missileStartPos, 500, SpaceInvaders.Properties.Resources.shoot1, 1);
                 gameInstance.AddNewGameObject(missile);
             }
         }

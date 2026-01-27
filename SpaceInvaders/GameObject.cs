@@ -6,16 +6,25 @@ using System.Text;
 
 namespace SpaceInvaders
 {
+    public enum Side
+    {
+        Ally,
+        Enemy,
+        Neutral
+    }
+
     /// <summary>
     /// This is the generic abstact base class for any entity in the game
     /// </summary>
+    /// 
     abstract class GameObject
     {
+        protected Side Side { get; set; }
       
-        public GameObject()
+        public GameObject(Side side)
         {
+            this.Side = side;
         }
-
 
         /// <summary>
         /// Update the state of a game objet

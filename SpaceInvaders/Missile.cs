@@ -12,7 +12,8 @@ namespace SpaceInvaders
     {
         public double speed; // Missile speed
 
-        public Missile(Vector2D startPosition, double speed, Bitmap image, int initialLives) : base(startPosition, image, initialLives)
+        public Missile(Side side, Vector2D startPosition, double speed, Bitmap image, int initialLives) :
+            base(side, startPosition, image, initialLives)
         {
             this.speed = speed;
         }

@@ -7,7 +7,8 @@ namespace SpaceInvaders
         public int lives; // Missile lives
         public Bitmap picture; // Image depicting the missile
 
-        public SimpleObject(Vector2D position, Bitmap picture, int lives)
+        public SimpleObject(Side side, Vector2D position, Bitmap picture, int lives) : 
+            base(side)
         {
             this.position = position;
             this.picture = picture;

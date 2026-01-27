@@ -42,7 +42,7 @@ namespace SpaceInvaders
         /// </summary>
         /// <param name="x">start position x</param>
         /// <param name="y">start position y</param>
-        public BalleQuiTombe(double x, double y) : base()
+        public BalleQuiTombe(Side side, double x, double y) : base(side)
         {
             this.x = x;
             this.y = y;
