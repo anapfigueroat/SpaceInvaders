@@ -16,7 +16,7 @@ namespace SpaceInvaders
 
         public override void Draw(Game gameInstance, Graphics graphics)
         {
-            graphics.DrawImage(picture, (float)position.x, (float)position.y);
+            graphics.DrawImage(picture, (float)position.x, (float)position.y, picture.Width, picture.Height);        
         }
 
         public override bool IsAlive()
@@ -77,8 +77,8 @@ namespace SpaceInvaders
                     if (m.picture.GetPixel(i, j).A != 0)
                     {
                         // Calculate corresponding position on the object image
-                        int bPixelX = (int)(m.position.x + i - this.position.x);
-                        int bPixelY = (int)(m.position.y + j - this.position.y);
+                        int bPixelX = (int) System.Math.Round(m.position.x + i - this.position.x);
+                        int bPixelY = (int) System.Math.Round(m.position.y + j - this.position.y);
 
                         // Check if valid coordinate on object
                         if (bPixelX >= 0 && bPixelX < this.picture.Width &&

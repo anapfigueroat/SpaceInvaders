@@ -33,5 +33,13 @@ namespace SpaceInvaders
                 gameInstance.ReleaseKey(Keys.Space); // Prevent continuous shooting
             }
         }
+        public override void Draw(Game gameInstance, Graphics graphics)
+        {
+            // Method chaining  
+            base.Draw(gameInstance, graphics);
+
+            // Displays the amount of lives
+            graphics.DrawString("Lives: " + lives, Game.defaultFont, Game.blackBrush, 10, 10);
+        }
     }
 }

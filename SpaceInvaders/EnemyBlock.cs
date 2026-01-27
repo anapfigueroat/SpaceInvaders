@@ -11,8 +11,8 @@ namespace SpaceInvaders
     {
         private HashSet<Spaceship> enemyShips;    // ships in the block
         private int baseWidth;                    // block width
-        protected Size Size {  get; set; }        // Block size (width, height)
-        protected Vector2D Position { get; set; } // Block position (top left corner)
+        public Size Size {  get; set; }        // Block size (width, height)
+        public Vector2D Position { get; set; } // Block position (top left corner)
         private int direction = 1;                // 1 = right, -1 = left
         private double speed = 50.0;              // starting speed of the enemy block
         private const double speedCoef = 1.1;     // speed change coefficient 
@@ -113,18 +113,18 @@ namespace SpaceInvaders
 
             foreach (var spaceShip in enemyShips)
             {
-                if (!(spaceShip.IsAlive())) continue;
+                if (!spaceShip.IsAlive()) continue;
 
                 double sX = spaceShip.position.x;
                 double sY = spaceShip.position.y;
                 double sW = spaceShip.picture.Width;
                 double sH = spaceShip.picture.Height;
 
-                if (mX > sX + sW || mX + mW < sX || mY > sY + sH || mY + mH < sY)
-                    continue; 
-
+                if (mX > sX + sW || mX + mW < sX || mY > sY + sH || mY + mH < sY) continue;  
+                
                 spaceShip.Collision(m);
-                break;
+
+                if (!m.IsAlive()) { break; }
             }
         }
     }

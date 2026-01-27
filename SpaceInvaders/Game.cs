@@ -15,7 +15,9 @@ namespace SpaceInvaders
     enum GameState
     {
         Play, 
-        Pause
+        Pause,
+        Won,
+        Lost
     }
     class Game
     {
@@ -72,12 +74,12 @@ namespace SpaceInvaders
         /// <summary>
         /// A shared black brush
         /// </summary>
-        private static Brush blackBrush = new SolidBrush(Color.Black);
+        public static Brush blackBrush = new SolidBrush(Color.Black);
 
         /// <summary>
         /// A shared simple font
         /// </summary>
-        private static Font defaultFont = new Font("Times New Roman", 24, FontStyle.Bold, GraphicsUnit.Pixel);
+        public static Font defaultFont = new Font("Times New Roman", 24, FontStyle.Bold, GraphicsUnit.Pixel);
         #endregion
 
 
@@ -102,6 +104,12 @@ namespace SpaceInvaders
         private Game(Size gameSize)
         {
             this.gameSize = gameSize;
+            Init();
+        }
+
+        private void Init(){
+
+            gameObjects.Clear();
 
             this.state = GameState.Play;
 
@@ -176,6 +184,16 @@ namespace SpaceInvaders
             {
                 g.DrawString("PAUSE", defaultFont, blackBrush, gameSize.Width / 2 - 30, gameSize.Height / 2);
             }
+            else if (state == GameState.Won)
+            {
+                g.DrawString("YOU WON!", defaultFont, blackBrush, gameSize.Width / 2 - 60, gameSize.Height / 2);
+                g.DrawString("Press Space", defaultFont, blackBrush, gameSize.Width / 2 - 60, gameSize.Height / 2 + 30);
+            }
+            else if (state == GameState.Lost)
+            {
+                g.DrawString("GAME OVER", defaultFont, blackBrush, gameSize.Width / 2 - 70, gameSize.Height / 2);
+                g.DrawString("Press Space", defaultFont, blackBrush, gameSize.Width / 2 - 70, gameSize.Height / 2 + 30);
+            }
         }
 
         /// <summary>
@@ -186,30 +204,49 @@ namespace SpaceInvaders
 
             if (keyPressed.Contains(Keys.P))
             {
-                if (state == GameState.Play)
-                    state = GameState.Pause;
-                else
-                    state = GameState.Play;
-
+                if (state == GameState.Play) state = GameState.Pause;
+                else if (state == GameState.Pause) state = GameState.Play;
                 ReleaseKey(Keys.P);
+            }
+
+            if ((state == GameState.Won || state == GameState.Lost) && keyPressed.Contains(Keys.Space))
+            {
+                //game restarts when Init() is called
+                Init();
+                ReleaseKey(Keys.Space);
+                return;
             }
 
             if (state == GameState.Play)
             {
-
-                // add new game objects
+                // Update objects
                 gameObjects.UnionWith(pendingNewGameObjects);
                 pendingNewGameObjects.Clear();
 
-
-                // update each game object
                 foreach (GameObject gameObject in gameObjects)
                 {
                     gameObject.Update(this, deltaT);
                 }
 
-                // remove dead objects
                 gameObjects.RemoveWhere(gameObject => !gameObject.IsAlive());
+
+                
+                // Defeat: Player died
+                if (!playerShip.IsAlive())
+                {
+                    state = GameState.Lost;
+                }
+                // Victory: All enemies destroyed
+                else if (!enemies.IsAlive())
+                {
+                    state = GameState.Won;
+                }
+                // Defeat: Enemies reached player level
+                else if (enemies.Position.y + enemies.Size.Height > playerShip.position.y)
+                {
+                    playerShip.lives = 0; // Kill player
+                    state = GameState.Lost;
+                }
             }
         }
         #endregion
