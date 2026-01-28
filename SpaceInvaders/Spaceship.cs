@@ -86,7 +86,7 @@ namespace SpaceInvaders
 
             if (new Random().NextDouble() < 0.3) // 30% chance to drop a bonus
             {
-                Bitmap bonusImage = SpaceInvaders.Properties.Resources.extraLife.png;
+                Bitmap bonusImage = SpaceInvaders.Properties.Resources.bonus;
                 if (bonusImage == null || picture == null) return;
 
                 Vector2D bonusStartPos = new Vector2D(
