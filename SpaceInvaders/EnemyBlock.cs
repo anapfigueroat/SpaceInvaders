@@ -104,6 +104,8 @@ namespace SpaceInvaders
                 // max 25% chance to shoot per ship
                 randomShootProbability = Math.Min(randomShootProbability * rngCoef, 0.25);
             }
+
+           
         }
 
         public override void Draw(Game gameInstance, Graphics graphics)

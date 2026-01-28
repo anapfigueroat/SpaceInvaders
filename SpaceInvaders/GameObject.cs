@@ -20,7 +20,9 @@ namespace SpaceInvaders
     abstract class GameObject
     {
         protected Side Side { get; set; }
-      
+
+        public Side ObjectSide => Side;
+
         public GameObject(Side side)
         {
             this.Side = side;

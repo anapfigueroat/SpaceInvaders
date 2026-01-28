@@ -59,6 +59,7 @@
     <Compile Include="Spaceship.cs" />
     <Compile Include="Missile.cs" />
     <Compile Include="SimpleObject.cs" />
+	<Compile Include="Bonus.cs" />
     <Compile Include="Vector2D.cs" />
     <Compile Include="Bunker.cs" />
     <Compile Include="Program.cs" />
